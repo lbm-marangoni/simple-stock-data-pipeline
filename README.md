@@ -69,8 +69,8 @@ pipeline.update_data()
 
 1. Clone the repository
 ```bash
-git clone https://github.com/lbm-marangoni/stock-data-pipeline
-cd stock-data-pipeline
+git clone https://github.com/lbm-marangoni/simple-stock-data-pipeline
+cd simple-stock-data-pipeline
 ```
 
 2. Install dependencies
@@ -81,5 +81,6 @@ pip install -r requirements.txt
 3. Run the notebook `pipeline.ipynb`
 
 ---
+
 
 *Built by [Lucas Marangoni](https://www.linkedin.com/in/lbm-marangoni) — Economics student at FAAP | Quant Finance & Portfolio Management*
