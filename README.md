@@ -1,5 +1,4 @@
 # 🔷 Simple Stock Data Pipeline
-
 > Automated pipeline for downloading, storing, and updating historical stock market data
 
 A Python class-based pipeline that automates the full data collection workflow for equity portfolios — from initial download to incremental updates — storing structured historical data ready for analysis, backtesting, or modeling.
@@ -84,3 +83,4 @@ pip install -r requirements.txt
 
 
 *Built by [Lucas Marangoni](https://www.linkedin.com/in/lbm-marangoni) — Economics student at FAAP | Quant Finance & Portfolio Management*
+
