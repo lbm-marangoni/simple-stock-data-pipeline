@@ -1,88 +1,199 @@
-# 🔷 Simple Stock Data Pipeline
-> Automated pipeline for downloading, storing, and updating historical stock market data
+# Simple Stock Data Pipeline
 
-A Python class-based pipeline that automates the full data collection workflow for equity portfolios — from initial download to incremental updates — storing structured historical data ready for analysis, backtesting, or modeling.
+A lightweight Python pipeline for collecting, storing, updating and consolidating historical equity market data for investment analysis and portfolio research.
 
----
-
-## 📌 What It Does
-
-1. **Data Download** — Fetches historical OHLCV data for any list of tickers via `yfinance`, storing each as a local `.csv` file
-2. **Data Loading** — Loads any individual ticker's stored data into a clean `DataFrame`
-3. **Incremental Update** — Detects the last stored date and downloads only the missing records, keeping data fresh without redundant calls
-4. **Portfolio Consolidation** — Merges all tickers' closing prices into a single `DataFrame` — ready to feed into a risk model, optimizer, or visualization
+The project focuses on the **data layer** of an investment workflow: keeping market data organized and reusable so downstream analyses can work from a consistent local source.
 
 ---
 
-## 💡 Why I Built This
+## Why I Built It
 
-Before running any portfolio analysis, you need clean, reliable data. Downloading raw data manually every time is inefficient and error-prone. This pipeline solves the data layer — so any downstream project (risk analysis, valuation, optimization) has a single, consistent data source to pull from.
+Before performing portfolio analysis, risk calculations or quantitative research, the underlying data needs to be accessible and consistently structured.
+
+Repeatedly downloading the same historical data manually is inefficient and makes research workflows harder to reproduce.
+
+This project was built to automate that basic infrastructure.
+
+> The objective is not to analyze investments directly, but to create a reliable input layer for other investment-research tools.
 
 ---
 
-## ⚙️ How It Works
+## Data Workflow
+
+```text
+Ticker Universe
+      ↓
+Market Data Download
+      ↓
+Local Storage
+      ↓
+Incremental Updates
+      ↓
+Data Consolidation
+      ↓
+Investment / Portfolio Analysis
+```
+
+The pipeline separates data collection from downstream analysis so the same stored dataset can be reused across different projects.
+
+---
+
+## What It Does
+
+### 1. Initial Data Collection
+
+Downloads historical OHLCV market data for a list of equities through `yfinance`.
+
+Each ticker is stored locally as an individual CSV file.
+
+### 2. Local Data Loading
+
+Loads previously stored data into Pandas DataFrames for analysis.
+
+### 3. Incremental Updates
+
+Checks the most recent stored observation and requests only newer market data.
+
+This avoids rebuilding the entire dataset whenever the pipeline is updated.
+
+### 4. Portfolio Data Consolidation
+
+Combines closing-price series from multiple equities into a single DataFrame.
+
+The resulting dataset can be used as an input for:
+
+- return calculations
+- correlation analysis
+- portfolio risk analysis
+- visualization
+- backtesting experiments
+- other research workflows
+
+---
+
+## Example
 
 ```python
-tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']
+tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "TSLA"]
+
 pipeline = StockDataPipeline(tickers)
 
-# Initial download — stores each ticker as CSV
-pipeline.download_data(period='2y')
+# Initial download
+pipeline.download_data(period="2y")
 
-# Load a single stock
-aapl = pipeline.load_data('AAPL')
+# Load one stock
+aapl = pipeline.load_data("AAPL")
 
-# Get all closing prices in one DataFrame
+# Consolidate portfolio closing prices
 portfolio = pipeline.get_portfolio_data()
 
-# Incremental update — only fetches new records
+# Update only missing observations
 pipeline.update_data()
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## Technology
 
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
-![yFinance](https://img.shields.io/badge/yFinance-6C63FF?style=for-the-badge&logo=yahoo&logoColor=white)
-![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white)
+- Python
+- Pandas
+- yFinance
+- Jupyter Notebook
+- CSV-based local storage
+
+The project is intentionally lightweight and focuses on workflow reliability rather than infrastructure complexity.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
-```
-📁 simple-stock-data-pipeline
+```text
+simple-stock-data-pipeline/
 ├── README.md
 ├── requirements.txt
-├── pipeline.ipynb          ← main notebook
-└── /stock_data             ← auto-created folder with CSV files
+├── pipeline.ipynb
+└── stock_data/
     ├── AAPL.csv
     ├── MSFT.csv
     └── ...
 ```
 
+The `stock_data/` directory is created automatically when the pipeline runs.
+
 ---
 
-## 🚀 How to Run
+## Running the Project
 
-1. Clone the repository
+Clone the repository:
+
 ```bash
 git clone https://github.com/lbm-marangoni/simple-stock-data-pipeline
 cd simple-stock-data-pipeline
 ```
 
-2. Install dependencies
+Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Run the notebook `pipeline.ipynb`
+Then run:
+
+```text
+pipeline.ipynb
+```
 
 ---
 
+## Limitations
 
-*Built by [Lucas Marangoni](https://www.linkedin.com/in/lbm-marangoni) — Economics student at FAAP | Quant Finance & Portfolio Management*
+The current version is intentionally simple.
 
+Its main limitations include:
 
+- reliance on `yfinance` as the market-data source
+- CSV-based storage rather than a database
+- limited data validation
+- no corporate-action normalization layer beyond what the source provides
+- no automated testing
+- no production-grade data orchestration
+
+These constraints are appropriate for the project's purpose as a small research utility rather than a production market-data platform.
+
+---
+
+## Role in My Investment Process
+
+This repository represents the **data infrastructure layer** behind investment and portfolio analysis.
+
+Its role is complementary to projects focused on research and decision-making.
+
+For broader investment-process work, see:
+
+**[SBWAA — Investment Research & Portfolio Decision-Support System](https://github.com/lbm-marangoni/sbwaa)**
+
+For an example of a first-stage company filtering tool, see:
+
+**[Equity Screening Utility](https://github.com/lbm-marangoni/stock-screener)**
+
+---
+
+## Author
+
+**Lucas Marangoni**
+
+Economics @ FAAP  
+Performance & Insights @ Bradesco  
+Research @ FAAP Finance
+
+Asset Management • Equity Research • Investment Analysis
+
+[LinkedIn](https://www.linkedin.com/in/lbm-marangoni)
+
+---
+
+## Disclaimer
+
+This repository is an educational and research project.
+
+Market data may contain errors, omissions or inconsistencies and should be independently verified before being used for investment decisions.
